@@ -110,14 +110,14 @@ public class AgoraCdnServiceImpl implements AgoraCdnService {
 
         String sign = "agora-cdn-push-stream" + urlPath + expire;
 
-        return DigestUtils.md5DigestAsHex(sign.getBytes()).substring(8, 24);
+        return DigestUtils.md5DigestAsHex(sign.getBytes());
     }
 
     private String pullSign(String urlPath, long expire) {
 
         String sign = "agora-cdn-pull-stream" + urlPath + expire;
 
-        return DigestUtils.md5DigestAsHex(sign.getBytes()).substring(8, 24);
+        return DigestUtils.md5DigestAsHex(sign.getBytes());
     }
 
 }
