@@ -19,6 +19,13 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- 集成声网token服务，如不需要可移除 -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>agora-token-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
