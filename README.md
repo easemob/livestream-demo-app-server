@@ -121,7 +121,7 @@ docker run -p 8080:8080 easemob/easemob-im-live-server
 
 - 直播间服务需调用环信REST接口，该模块提供调用环信REST服务，包含token、user、chatroom API的调用，封装了调用所需的RequestBody、ResponseBody。
 
-#### [agora-token-server](./agora-token-server)
+#### [agora-token-server](https://github.com/easemob/livestream-demo-app-server/tree/master/agora-token-service)
 
 - 获取声网trc token。
 
