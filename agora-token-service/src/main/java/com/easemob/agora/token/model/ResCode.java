@@ -1,4 +1,4 @@
-package com.agora.token.model;
+package com.easemob.agora.token.model;
 
 public enum ResCode {
     RES_0K(200),//可以成功返回

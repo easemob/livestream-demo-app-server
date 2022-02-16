@@ -1,4 +1,4 @@
-package com.agora.token.utils;
+package com.easemob.agora.token.utils;
 
 import org.apache.commons.lang.math.RandomUtils;
 

@@ -1,4 +1,4 @@
-package com.agora.token.model;
+package com.easemob.agora.token.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

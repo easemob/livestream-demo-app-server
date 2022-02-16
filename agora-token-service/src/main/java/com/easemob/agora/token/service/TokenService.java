@@ -1,4 +1,4 @@
-package com.agora.token.service;
+package com.easemob.agora.token.service;
 
 import com.agora.token.model.TokenInfo;
 

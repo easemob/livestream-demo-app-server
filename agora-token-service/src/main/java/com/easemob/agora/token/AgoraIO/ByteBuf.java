@@ -1,4 +1,4 @@
-package com.agora.token.AgoraIO;
+package com.easemob.agora.token.AgoraIO;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

@@ -1,4 +1,4 @@
-package com.agora.token.service.impl;
+package com.easemob.agora.token.service.impl;
 
 import com.agora.token.AgoraIO.RtcTokenGenerate;
 import com.agora.token.config.AppConfig;

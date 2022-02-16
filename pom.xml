@@ -11,6 +11,7 @@
     <modules>
         <module>easemob-im-live-server</module>
         <module>agora-cdn-live-service</module>
+        <module>agora-token-service</module>
     </modules>
 
     <name>livestream-demo-app-server</name>

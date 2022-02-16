@@ -1,4 +1,4 @@
-package com.agora.token.AgoraIO;
+package com.easemob.agora.token.AgoraIO;
 
 public class RtcTokenBuilder {
 	public enum Role {

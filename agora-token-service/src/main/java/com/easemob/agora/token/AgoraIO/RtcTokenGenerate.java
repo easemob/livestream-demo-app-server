@@ -1,4 +1,4 @@
-package com.agora.token.AgoraIO;
+package com.easemob.agora.token.AgoraIO;
 
 import lombok.extern.slf4j.Slf4j;
 
