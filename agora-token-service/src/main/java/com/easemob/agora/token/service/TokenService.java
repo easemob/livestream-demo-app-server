@@ -1,6 +1,6 @@
 package com.easemob.agora.token.service;
 
-import com.agora.token.model.TokenInfo;
+import com.easemob.agora.token.model.TokenInfo;
 
 /**
  * @author skyfour

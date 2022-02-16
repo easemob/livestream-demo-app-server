@@ -1,9 +1,9 @@
 package com.easemob.agora.token.service.impl;
 
-import com.agora.token.AgoraIO.RtcTokenGenerate;
-import com.agora.token.config.AppConfig;
-import com.agora.token.model.TokenInfo;
-import com.agora.token.service.TokenService;
+import com.easemob.agora.token.AgoraIO.RtcTokenGenerate;
+import com.easemob.agora.token.config.AppConfig;
+import com.easemob.agora.token.model.TokenInfo;
+import com.easemob.agora.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
