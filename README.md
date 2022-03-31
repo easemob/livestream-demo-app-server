@@ -86,6 +86,22 @@
         spring.datasource.password=123456
     ```
     
+    - 如果需要生成声网CDN推拉流地址，需要设置服务配置文件如下：
+    ```
+        // agora CDN直播相关参数
+        easemob.agora.cdn.appid=xxx
+        easemob.agora.cdn.appcert=xxx
+        easemob.agora.cdn.pushDomain=xxx
+        easemob.agora.cdn.rtmpDomain=xxx
+        easemob.agora.cdn.flvDomain=xxx
+        easemob.agora.cdn.hlsDomain=xxx
+        easemob.agora.cdn.pushPoint=xxx
+        easemob.agora.cdn.expire=xxx
+        // 用于生成防盗链推拉流地址的密钥，如果不需要防盗链可以不用此参数
+        easemob.agora.cdn.pushSecretKey=
+        easemob.agora.cdn.pullSecretKey=
+    ```
+    
     - 启动服务即可
 
 
