@@ -527,87 +527,91 @@ curl -X PUT http://localhost:8081/appserver/liverooms/107780133421057/owner/hxte
 ```
 
 
-## 获取推流地址
-
-**API说明:** 获取七牛云直播推流地址。详情见：[七牛云文档](https://developer.qiniu.com/pili/api/2767/the-rtmp-push-flow-address)
-
-**Path:** `http://localhost:8080/appserver/streams/url/publish`
+## 获取声网 CDN 推流地址
 
 **HTTP Method:** `GET`
 
-**Permission:** App用户
+**Path:** `http://a1.easemob.com/appserver/agora/cdn/streams/url/push`
+
+**Permission:** `App User`
 
 **Request Parameters:** 
 
-| 参数 | 类型 | 说明  |
-| --- | --- | --- |
-| domain    | String | 推流域名，此属性为可选项，默认获取配置文件中该参数 |
-| hub       | String | 直播空间名，此属性为可选项，默认获取配置文件中该参数 |
-| streamKey | String | 流名，此属性为必选项 |
-| expire    | Integer| 获取推流url过期时间，单位为秒，此属性为可选的，默认600秒后过期 |
+| 参数      | 类型    | 说明                                                         |
+| --------- | ------- | ------------------------------------------------------------ |
+| domain    | String  | 声网 CDN 直播推流域名 |
+| pushPoint | String  | 声网 CDN 直播发布点，传 `live` 即可                          |
+| streamKey | String  | 声网 CDN 直播流名称，目前以 `channel` 即聊天室id命名，此id唯一 |
+| expire    | Integer | 声网 CDN 直播推流地址有效期，单位：秒                        |
 
 **Request Headers:** 
 
-| 参数 | 说明  |
-| --- | --- |
+| 参数          | 说明             |
+| ------------- | ---------------- |
 | Content-Type  | application/json |
-| Authorization | Bearer ${token} |
-
-**Request Body示例:** 无
+| Authorization | Bearer ${token}  |
 
 **请求示例:**
 
 ```
-curl -X GET 'http://localhost:8080/appserver/streams/url/publish?domain=pili-publish.shenchong.com&hub=shenchong-liveroom&streamKey=hxtest1' -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8' -H 'Content-Type: application/json'
+curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Content-Type: application/json' 'http://a1.easemob.com/appserver/agora/cdn/streams/url/push?domain=xxxxxx&pushPoint=live&streamKey=167393094598658&expire=3600'
 ```
+
+**Response Parameters:**
+
+| 参数 | 类型   | 说明                        |
+| ---- | ------ | --------------------------- |
+| data | String | 声网CDN直播推流地址(防盗链) |
 
 **返回示例:**
 
 ```json
 {
-    "data": "rtmp://pili-publish.shenchong.com/shenchong-liveroom/hxtest1?e=1589261045&token=xxx:CSErrjZukoIVxBuwlTT0LWcwVF8="
+    "data": "rtmp://xxxxxx/live/167393094598658?ts=1638955459&sign=692c3214f8de39cf"
 }
 ```
 
 
-## 获取播放地址
-
-**API说明:** 获取七牛云直播流播放地址。详情见：[七牛云文档](https://developer.qiniu.com/pili/api/2768/rtmp-broadcast-address)
-
-**Path:** `http://localhost:8080/appserver/streams/url/play`
+## 获取声网 CDN 拉流地址
 
 **HTTP Method:** `GET`
 
-**Permission:** App用户
+**Path:** `http://a1.easemob.com/appserver/agora/cdn/streams/url/play`
+
+**Permission:** `App User`
 
 **Request Parameters:** 
 
-| 参数 | 类型 | 说明  |
-| --- | --- | --- |
-| domain    | String | 播放域名，此属性为可选项，默认获取配置文件中该参数 |
-| hub       | String | 直播空间名，此属性为可选项，默认获取配置文件中该参数 |
-| streamKey | String | 流名，此属性为必选的 |
-| protocol  | String | 播放协议，此属性为可选的，默认为rtmp；可选的三个值为：rtmp，hls，hdl |
+| 参数      | 类型   | 说明                                                         |
+| --------- | ------ | ------------------------------------------------------------ |
+| protocol  | String | 播放协议，分为 rtmp、flv、hls                                |
+| domain    | String | 声网 CDN 直播拉流域名 |
+| pushPoint | String | 声网 CDN 直播发布点，传 `live` 即可                          |
+| streamKey | String | 声网 CDN 直播流名称，目前以 `channel` 即聊天室id命名，此id唯一 |
 
 **Request Headers:** 
 
-| 参数 | 说明  |
-| --- | --- |
+| 参数          | 说明             |
+| ------------- | ---------------- |
 | Content-Type  | application/json |
-| Authorization | Bearer ${token} |
-
-**Request Body示例:** 无
+| Authorization | Bearer ${token}  |
 
 **请求示例:**
 
 ```
-curl -X GET 'http://localhost:8080/appserver/streams/url/play?domain=pili-publish.shenchong.com&hub=shenchong-liveroom&streamKey=hxtest1' -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8' -H 'Content-Type: application/json'
+curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Content-Type: application/json' 'http://a1.easemob.com/appserver/agora/cdn/streams/url/play?protocol=hls&domain=xxxxxx&pushPoint=live&streamKey=167393094598658'
 ```
+
+**Response Parameters:**
+
+| 参数 | 类型   | 说明                        |
+| ---- | ------ | --------------------------- |
+| data | String | 声网CDN直播拉流地址(防盗链) |
 
 **返回示例:**
 
 ```json
 {
-    "data": "rtmp://pili-publish.shenchong.com/shenchong-liveroom/hxtest1"
+    "data": "http://xxxxxx/live/167393094598658/playlist.m3u8?ts=1638955646&sign=ca42533c45d3b4dc"
 }
 ```
