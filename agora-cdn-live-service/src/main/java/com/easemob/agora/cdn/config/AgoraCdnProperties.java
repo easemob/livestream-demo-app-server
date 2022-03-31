@@ -43,4 +43,14 @@ public class AgoraCdnProperties {
      * 声网 直播推流地址过期时间，单位秒
      */
     private int expire;
+
+    /**
+     * 用于生成声网推流防盗链的密钥
+     */
+    private String pushSecretKey;
+
+    /**
+     * 用于生成声网拉流防盗链的密钥
+     */
+    private String pullSecretKey;
 }

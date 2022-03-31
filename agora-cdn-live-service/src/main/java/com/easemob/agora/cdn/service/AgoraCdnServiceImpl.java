@@ -5,6 +5,7 @@ import com.easemob.agora.cdn.enums.PlayProtocol;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Component
@@ -22,6 +23,10 @@ public class AgoraCdnServiceImpl implements AgoraCdnService {
 
     private final int expire;
 
+    private String pushSecretKey;
+
+    private String pullSecretKey;
+
     public AgoraCdnServiceImpl(AgoraCdnProperties properties) {
 
         this.pushDomain = properties.getPushDomain();
@@ -35,6 +40,10 @@ public class AgoraCdnServiceImpl implements AgoraCdnService {
         this.pushPoint = properties.getPushPoint();
 
         this.expire = properties.getExpire();
+
+        this.pushSecretKey = properties.getPushSecretKey();
+
+        this.pullSecretKey = properties.getPullSecretKey();
     }
 
     @Override
@@ -71,7 +80,11 @@ public class AgoraCdnServiceImpl implements AgoraCdnService {
 
         String path = String.format("/%s/%s", pushPoint, streamKey);
 
-        return String.format("rtmp://%s%s?ts=%d&sign=%s", domain, path, expire, pushSign(path, expire));
+        if (StringUtils.isEmpty(this.pushSecretKey)) {
+            return String.format("rtmp://%s%s?ts=%d", domain, path, expire);
+        } else {
+            return String.format("rtmp://%s%s?ts=%d&sign=%s", domain, path, expire, pushSign(path, expire));
+        }
     }
 
     private String assemblePlayURL(PlayProtocol playProtocol, String domain, String pushPoint, String streamKey, int expireAfterSeconds) {
@@ -80,6 +93,8 @@ public class AgoraCdnServiceImpl implements AgoraCdnService {
 
         String path;
 
+        String playUrl;
+
         switch (playProtocol) {
 
             case RTMP:
@@ -87,35 +102,44 @@ public class AgoraCdnServiceImpl implements AgoraCdnService {
 
                 path = String.format("/%s/%s", pushPoint, streamKey);
 
-                return String.format("rtmp://%s%s?ts=%d&sign=%s", domain, path, expire, pullSign(path, expire));
+                playUrl = String.format("rtmp://%s%s?ts=%d", domain, path, expire);
+                break;
             case FLV:
                 domain = domain == null ? this.flvDomain : domain;
 
                 path = String.format("/%s/%s.flv", pushPoint, streamKey);
 
-                return String.format("http://%s%s?ts=%d&sign=%s", domain, path, expire, pullSign(path, expire));
+                playUrl = String.format("http://%s%s?ts=%d", domain, path, expire);
+                break;
             case HLS:
                 domain = domain == null ? this.hlsDomain : domain;
 
                 path = String.format("/%s/%s/playlist.m3u8", pushPoint, streamKey);
 
-                return String.format("http://%s%s?ts=%d&sign=%s", domain, path, expire, pullSign(path, expire));
+                playUrl = String.format("http://%s%s?ts=%d", domain, path, expire);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported protocol");
+        }
+
+        if (StringUtils.isEmpty(this.pullSecretKey)) {
+            return playUrl;
+        } else {
+            return String.format("%s&sign=%s", playUrl, pullSign(path, expire));
         }
 
     }
 
     private String pushSign(String urlPath, long expire) {
 
-        String sign = "agora-cdn-push-stream" + urlPath + expire;
+        String sign = this.pushSecretKey + urlPath + expire;
 
         return DigestUtils.md5DigestAsHex(sign.getBytes());
     }
 
     private String pullSign(String urlPath, long expire) {
 
-        String sign = "agora-cdn-pull-stream" + urlPath + expire;
+        String sign = this.pullSecretKey + urlPath + expire;
 
         return DigestUtils.md5DigestAsHex(sign.getBytes());
     }
