@@ -531,7 +531,7 @@ curl -X PUT http://localhost:8081/appserver/liverooms/107780133421057/owner/hxte
 
 **HTTP Method:** `GET`
 
-**Path:** `http://a1.easemob.com/appserver/agora/cdn/streams/url/push`
+**Path:** `http://localhost:8080/appserver/agora/cdn/streams/url/push`
 
 **Permission:** `App User`
 
@@ -554,7 +554,7 @@ curl -X PUT http://localhost:8081/appserver/liverooms/107780133421057/owner/hxte
 **请求示例:**
 
 ```
-curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Content-Type: application/json' 'http://a1.easemob.com/appserver/agora/cdn/streams/url/push?domain=xxxxxx&pushPoint=live&streamKey=167393094598658&expire=3600'
+curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Content-Type: application/json' 'http://localhost:8080/appserver/agora/cdn/streams/url/push?domain=xxxxxx&pushPoint=live&streamKey=167393094598658&expire=3600'
 ```
 
 **Response Parameters:**
@@ -576,7 +576,7 @@ curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Con
 
 **HTTP Method:** `GET`
 
-**Path:** `http://a1.easemob.com/appserver/agora/cdn/streams/url/play`
+**Path:** `http://localhost:8080/appserver/agora/cdn/streams/url/play`
 
 **Permission:** `App User`
 
@@ -599,7 +599,7 @@ curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Con
 **请求示例:**
 
 ```
-curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Content-Type: application/json' 'http://a1.easemob.com/appserver/agora/cdn/streams/url/play?protocol=hls&domain=xxxxxx&pushPoint=live&streamKey=167393094598658'
+curl -X GET -H 'Authorization: Bearer YWMtVPHfHCeREeqZiOl8_bc0eAAAAAAAA' -H 'Content-Type: application/json' 'http://localhost:8080/appserver/agora/cdn/streams/url/play?protocol=hls&domain=xxxxxx&pushPoint=live&streamKey=167393094598658'
 ```
 
 **Response Parameters:**
