@@ -35,4 +35,9 @@ public enum VideoType {
      */
     agora_cdn_live,
 
+    /**
+     * 声网宣传直播
+     */
+    agora_promotion_live,
+
 }

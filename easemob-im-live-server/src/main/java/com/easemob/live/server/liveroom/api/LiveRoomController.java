@@ -42,6 +42,17 @@ public class LiveRoomController {
     }
 
     /**
+     * 创建声网宣传直播间
+     */
+    @PostMapping("/appserver/promotion/liverooms")
+    public ResponseEntity createPromotionLiveRoom(HttpServletRequest request) {
+
+        RequestUtils.resolveAuthorizationToken(request.getHeader(AUTHORIZATION));
+
+        return ResponseEntity.ok(liveRoomService.createPromotionLiveRoom());
+    }
+
+    /**
      * 获取直播间详情
      */
     @GetMapping("/appserver/liverooms/{liveroomId}")

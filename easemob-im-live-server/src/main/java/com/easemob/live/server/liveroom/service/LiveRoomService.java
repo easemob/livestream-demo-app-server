@@ -22,10 +22,12 @@ import com.easemob.live.server.utils.ModelConverter;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +47,15 @@ public class LiveRoomService {
     private ApplicationEventPublisher eventPublisher;
 
     private int maxAffiliationsSize;
+
+    @Value("${easemob.live.promotion.room.name}")
+    private String promotionRoomName;
+
+    @Value("${easemob.live.promotion.room.video.url}")
+    private String promotionRoomVideoUrl;
+
+    @Value("${easemob.live.promotion.room.owner}")
+    private String promotionRoomOwner;
 
     private Cache<String, LiveRoomInfo> infoCache = Caffeine.newBuilder()
             .initialCapacity(100)
@@ -135,6 +146,57 @@ public class LiveRoomService {
         liveRoomDetailsRepository.save(liveRoomDetails);
 
         log.info("create liveroom success, liveRoomInfo : {}", liveRoomInfo);
+
+        return liveRoomInfo;
+    }
+
+    public LiveRoomInfo createPromotionLiveRoom() {
+
+        String token = restClient.retrieveAppToken();
+
+        // 创建聊天室
+        CreateChatroomRequest chatroomRequest = CreateChatroomRequest.builder()
+                .name(promotionRoomName)
+                .owner(promotionRoomOwner)
+                .maxUsers(2000)
+                .mute(false)
+                .scale(CreateChatroomRequest.Scale.LARGE)
+                .build();
+
+        String chatroomId = restClient.createChatroom(chatroomRequest, token);
+
+        log.info("create chatroom success, chatroomId : {}", chatroomId);
+
+        // 获取聊天室详情
+        LiveRoomInfo liveRoomInfo = restClient.retrieveChatroomInfo(chatroomId, token)
+                .filterLiveRoomInfo(maxAffiliationsSize);
+        liveRoomInfo.setPersistent(true);
+        liveRoomInfo.setVideoType(VideoType.agora_promotion_live);
+        liveRoomInfo.setStatus(LiveRoomStatus.ONGOING);
+        Map<String, Object> videoInfo = new HashMap<>();
+        videoInfo.put("videoUrl", promotionRoomVideoUrl);
+        liveRoomInfo.setExt(videoInfo);
+
+        LiveRoomDetails liveRoomDetails = LiveRoomDetails.builder()
+                .id(Long.valueOf(liveRoomInfo.getId()))
+                .name(liveRoomInfo.getName())
+                .description(liveRoomInfo.getDescription())
+                .created(liveRoomInfo.getCreated())
+                .owner(liveRoomInfo.getOwner())
+                .cover(liveRoomInfo.getCover())
+                .persistent(liveRoomInfo.getPersistent())
+                .videoType(liveRoomInfo.getVideoType())
+                .status(liveRoomInfo.getStatus())
+                .showid(liveRoomInfo.getShowid())
+                .affiliationsCount(liveRoomInfo.getAffiliationsCount())
+                .ext(JsonUtils.mapToJsonString(liveRoomInfo.getExt()))
+                .channel(chatroomId)
+                .build();
+        liveRoomInfo.setChannel(chatroomId);
+
+        liveRoomDetailsRepository.save(liveRoomDetails);
+
+        log.info("create promotion liveroom success, liveRoomInfo : {}", liveRoomInfo);
 
         return liveRoomInfo;
     }
@@ -239,6 +301,12 @@ public class LiveRoomService {
 
         if (videoType == VideoType.agora_cdn_live) {
             liveRoomDetailsList = liveRoomDetailsRepository.findOngoingAgoraCdnLiveRoomsBeforeId(cursor, limit);
+            if (cursor.equals(9223372036854775807L)) {
+                LiveRoomDetails PromotionLiveRoomDetails = liveRoomDetailsRepository.findAgoraPromotionLiveRoom();
+                if (PromotionLiveRoomDetails != null) {
+                    liveRoomDetailsList.add(0, PromotionLiveRoomDetails);
+                }
+            }
         }
 
         if (videoType == null) {
