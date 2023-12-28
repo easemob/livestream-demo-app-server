@@ -7,11 +7,9 @@
     <groupId>com.easemob.im</groupId>
     <artifactId>livestream-demo-app-server</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.7.Final</version>
+    <version>0.0.0.1.Final</version>
     <modules>
-        <module>easemob-im-live-server</module>
-        <module>agora-cdn-live-service</module>
-        <module>agora-token-service</module>
+        <module>live-room-service</module>
     </modules>
 
     <name>livestream-demo-app-server</name>

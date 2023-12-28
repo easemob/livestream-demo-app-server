@@ -1,30 +1,35 @@
 create database app_server character set utf8mb4;
 
-create table app_user_info (
-    id bigint(20) AUTO_INCREMENT primary key,
-	user_account varchar(32) not null commit '用户的账号',
-	user_password varchar(32) commit '用户的密码',
-    chat_user_name varchar(32) not null commit '环信用户名',
-    agora_uid varchar(20) not null commit '声网用户id'
-);
+CREATE TABLE `live_room_user_info`
+(
+    `id`       bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    `appkey`   varchar(512) NOT NULL COMMENT 'appkey',
+    `username` varchar(200) NOT NULL COMMENT '用户名',
+    `nickname` varchar(100) DEFAULT NULL COMMENT '用户昵称',
+    `icon_key` varchar(512) DEFAULT NULL COMMENT '头像key',
+    `created`  bigint(20) DEFAULT NULL COMMENT '用户创建时间戳',
+    PRIMARY KEY (`id`),
+    KEY        `idx_appkey_username` (`appkey`,`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-create table live_room_details (
-    id bigint not null comment '直播间ID，即对应的聊天室 ID，聊天室唯一标识符，由环信服务器生成',
-    name varchar(512) not null comment '直播间名称，即对应的聊天室名称，任意字符串',
-    description varchar(512) comment '直播间描述，即对应的聊天室描述，任意字符串',
-    created bigint comment '直播间创建时间戳',
-    owner varchar(512) comment '直播间主播的username，也是对应聊天室的所有者',
-    showid bigint comment '直播场次ID',
-    status integer comment '直播状态',
-    cover varchar(512) comment '直播间封面Url',
-    affiliations_count integer comment '直播间人数',
-    ext varchar(1024) comment '直播间扩展参数',
-    primary key (id),
-    index SHOW_STATUS (status)
-) engine=InnoDB DEFAULT CHARSET=utf8mb4;
-
-ALTER TABLE live_room_details ADD persistent bit NOT NULL DEFAULT 1;
-
-ALTER TABLE live_room_details ADD video_type integer NOT NULL DEFAULT 0;
+CREATE TABLE `live_room_details`
+(
+    `id`                 bigint(20) NOT NULL COMMENT '直播间ID，即对应的聊天室 ID，聊天室唯一标识符，由环信服务器生成',
+    `name`               varchar(512) NOT NULL COMMENT '直播间名称，即对应的聊天室名称，任意字符串',
+    `icon_key`           varchar(200)          DEFAULT NULL COMMENT '直播间创建者头像key',
+    `description`        varchar(512)          DEFAULT NULL COMMENT '直播间描述，即对应的聊天室描述，任意字符串',
+    `created`            bigint(20) DEFAULT NULL COMMENT '直播间创建时间戳',
+    `owner`              varchar(512)          DEFAULT NULL COMMENT '直播间主播的username，也是对应聊天室的所有者',
+    `showid`             bigint(20) DEFAULT NULL COMMENT '直播场次ID',
+    `status`             int(11) DEFAULT NULL COMMENT '直播状态',
+    `cover`              varchar(512)          DEFAULT NULL COMMENT '直播间封面Url',
+    `affiliations_count` int(11) DEFAULT NULL COMMENT '直播间人数',
+    `ext`                varchar(1024)         DEFAULT NULL COMMENT '直播间扩展参数',
+    `persistent`         bit(1)       NOT NULL DEFAULT b'1',
+    `video_type`         int(11) NOT NULL DEFAULT '0',
+    `channel`            varchar(64)  NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY                  `SHOW_STATUS` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE live_room_details ADD channel varchar(64) NOT NULL;
